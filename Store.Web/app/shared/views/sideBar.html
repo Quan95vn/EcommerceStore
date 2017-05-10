@@ -1,0 +1,71 @@
+﻿<section class="sidebar">
+    <div class="user-panel">
+        <div class="pull-left image">
+            <img src="/assets/admin/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+        </div>
+        <div class="pull-left info">
+            <p>{{authentication.userName}}</p>
+            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+        </div>
+    </div>
+    <form action="#" method="get" class="sidebar-form">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="Search...">
+            <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <ul class="sidebar-menu">
+        <li class="header">MAIN NAVIGATION</li>
+        <li class="treeview">
+            <a ui-sref="home">
+                <i class="fa fa-dashboard"></i>
+                <span>Trang chủ</span>
+            </a>
+        </li>
+        <li class="treeview">
+            <a href="javascript:void(0);">
+                <i class="fa fa-archive"></i> <span>Sản phẩm </span> <i class="fa fa-angle-left pull-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                <li><a ui-sref="product"><i class="fa fa-circle-o"></i> Thông tin sản phẩm</a></li>
+                <li><a ui-sref="category"><i class="fa fa-circle-o"></i>Danh mục sản phẩm</a></li>
+            </ul>
+        </li>
+        <li class="treeview">
+            <a ui-sref="slide">
+                <i class="glyphicon glyphicon-film"></i> <span>Quản lý Slide</span>
+            </a>
+        </li>
+        <li class="treeview">
+            <a ui-sref="contact">
+                <i class="fa fa-address-book"></i>
+                <span>Liên hệ</span>
+            </a>
+        </li>
+        <li class="treeview">
+            <a ui-sref="order">
+                <i class="fa fa-shopping-cart "></i>
+                <span>Danh sách đơn hàng</span>
+            </a>
+        </li>
+        <li class="treeview">
+            <a href="javascript:void(0);">
+                <i class="fa fa-users"></i> <span>Quản lý User </span> <i class="fa fa-angle-left pull-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                <li><a ui-sref="application_groups"><i class="fa fa-circle-o"></i> Danh sách nhóm</a></li>
+                <li><a ui-sref="application_roles"><i class="fa fa-circle-o"></i>Danh sách quyền</a></li>
+                <li><a ui-sref="application_users"><i class="fa fa-circle-o"></i>Danh sách người dùng</a></li>
+            </ul>
+        </li>
+        <li class="treeview">
+            <a ui-sref="statistic_revenue">
+                <i class="fa fa-area-chart"></i>
+                <span>Thống kê</span>
+            </a>
+        </li>
+    </ul>
+</section>
+<noembed>

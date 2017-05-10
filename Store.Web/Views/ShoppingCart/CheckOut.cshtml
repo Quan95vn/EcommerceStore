@@ -1,0 +1,272 @@
+﻿@model  Store.Web.ViewModels.OrderViewModel
+
+
+@{
+    ViewBag.Title = "Giỏ hàng của bạn";
+}
+
+@{
+    var cart = (List<Store.Web.ViewModels.ShoppingCartViewModel>)ViewBag.Cart;
+}
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Raw Camera - Thanh toán đơn hàng">
+
+    <title>QuanStore - Thanh toán đơn hàng</title>
+
+    <link href="~/assets/admin/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/assets/client/font-awesome-4.6.3/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/assets/client/css/checkOut.css" rel="stylesheet" />
+
+</head>
+<body class="body--custom-background-color ">
+
+    <div context="checkout" class="container checkout">
+        <!-- Header -->
+        <div class="header">
+            <div class="wrap">
+                <div class="shop logo  logo--left ">
+
+                    <h1 class="shop__name">
+                        <a href="/">
+                            Quan Store
+                        </a>
+                    </h1>
+
+                </div>
+            </div>
+        </div>
+        <div class="main">
+            <div class="wrap clearfix">
+                <div class="row">
+
+                    <div class="col-md-4 col-sm-12 order-info">
+                        <div class="order-summary order-summary--custom-background-color ">
+                            <div class="order-summary-header summary-header--thin summary-header--border">
+                                <h2>
+                                    <label class="control-label">Đơn hàng</label>
+                                </h2>
+                                <a class="underline-none expandable expandable--pull-right mobile" bind-event-click="toggle(this, '.order-items')" bind-class="{open: order_expand}" href="javascript:void(0)">
+                                    Xem chi tiết
+                                </a>
+                            </div>
+                            <div class="order-items mobile--is-collapsed" bind-class="{'mobile--is-collapsed': !order_expand}">
+                                <div class="summary-body summary-section summary-product">
+                                    <div class="summary-product-list">
+                                        <ul class="product-list">
+                                            @foreach (var product in cart)
+                                            {
+                                                var url = "sanpham/" + product.Product.Id + "/" + product.Product.Alias + ".html";
+                                                <li class="product product-has-image clearfix">
+                                                    <div class="product-thumbnail pull-left">
+                                                        <!-- Image -->
+                                                        <div class="product-thumbnail__wrapper">
+                                                            <img src="@product.Product.ThumbImage" alt="@product.Product.Name" class="product-thumbnail__image">
+                                                        </div>
+
+                                                        <!-- Quantity -->
+                                                        <span class="product-thumbnail__quantity" aria-hidden="true">@product.Quantity</span>
+                                                    </div>
+
+                                                    <!-- Product Name -->
+                                                    <div class="product-info pull-left">
+                                                        <a href="@url" class="product-info-name">
+                                                            <strong>@product.Product.Name</strong>
+                                                        </a>
+
+                                                        <span class="product-info-description"></span>
+                                                    </div>
+
+                                                    @{
+                                                        var productPrice = (product.Product.PromotionPrice.HasValue) ? product.Product.PromotionPrice.Value : product.Product.Price;
+                                                    }
+                                                    <!-- Product Price-->
+                                                    <strong class="product-price pull-right">
+                                                        @productPrice.ToString("N0")
+                                                    </strong>
+                                                </li>
+                                                        }
+
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="summary-section border-top-none--mobile">
+                                <div class="total-line total-line-subtotal clearfix">
+                                    <span class="total-line-name pull-left">Tạm tính</span>
+                                    @{
+                                        decimal totalPrice = 0;
+
+                                    }
+                                    @for (var i = 0; i < cart.Count; i++)
+                                    {
+                                        var productPrice = (cart[i].Product.PromotionPrice.HasValue)
+                                            ? cart[i].Product.PromotionPrice.Value : cart[i].Product.Price;
+
+                                        totalPrice += (productPrice * cart[i].Quantity);
+                                    }
+                                    <span class="total-line-subprice pull-right">@totalPrice.ToString("N0")</span>
+                                </div>
+                                <div class="total-line total-line-shipping clearfix">
+                                    <span class="total-line-name pull-left">
+                                        Phí vận chuyển
+                                    </span>
+                                    <span class="total-line-shipping pull-right">40.000₫</span>
+                                </div>
+                                <div class="total-line total-line-total clearfix">
+                                    <span class="total-line-name pull-left">
+                                        Tổng cộng
+                                    </span>
+                                    <span class="total-line-price pull-right">@((totalPrice + 40000).ToString("N0"))</span>
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="form-group clearfix hidden-sm hidden-xs">
+                                <input class="btn btn-primary col-md-12 mt10 btn-checkout" type="button" value="ĐẶT HÀNG">
+                            </div>*@
+                        <div class="form-group has-error">
+                            <div class="help-block ">
+                                <ul class="list-unstyled"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12 customer-info">
+                        <div define="{billing_address: {}, billing_expand:true}" class="form-group m0">
+                            <h2>
+                                <label class="control-label">Thông tin mua hàng</label>
+                            </h2>
+                        </div>
+                        @using (Html.BeginForm("CheckOut", "ShoppingCart", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                @Html.ActionLink("Đăng ký tài khoản mua hàng", "Register", "Account")
+                                <span style="padding: 0 5px;">/</span>
+                                @Html.ActionLink("Đăng nhập", "Login", "Account", new { @returnUrl = "/thanh-toan" }, "")
+                            </div>
+
+                            <div class="form-group">
+                                @Html.TextBoxFor(o => o.CustomerEmail, new
+                           {
+                               @placeholder = "Email của bạn",
+                               @class = "form-control",
+                               @required = "required",
+                               @id = "txtEmail",
+                               type = "email"
+                           })
+                                @Html.ValidationMessageFor(o => o.CustomerEmail)
+                            </div>
+                            <hr class="divider">
+
+                            <div class="billing">
+                                <div class="form-group">
+                                    <a class="underline-none open" href="javascript:void(0)">
+                                        <span>Thông tin thanh toán và nhận hàng</span>
+
+                                    </a>
+                                </div>
+                                <div>
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(o => o.CustomerName, new
+                                   {
+                                       @placeholder = "Vui lòng nhập họ tên",
+                                       @class = "form-control",
+                                       @id = "txtName",
+                                       @required = "required"
+                                   })
+                                        @Html.ValidationMessageFor(o => o.CustomerName)
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(o => o.CustomerAddress, new
+                                   {
+                                       @placeholder = "Vui lòng nhập địa chỉ của bạn",
+                                       @class = "form-control",
+                                       @id = "txtAddress",
+                                       @required = "required"
+                                   })
+                                        @Html.ValidationMessageFor(o => o.CustomerAddress)
+                                    </div>
+
+                                    @*<div class="form-group">
+                                            @Html.TextBoxFor(o => o.PaymentMethod, new { @placeholder = "Vui lòng nhập phương thức thanh toán", @class = "form-control", @required = "required" })
+                                            @Html.ValidationMessageFor(o => o.PaymentMethod)
+                                        </div>*@
+
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(o => o.CustomerMobile, new
+                                   {
+                                       @placeholder = "Vui lòng nhập số điện thoại",
+                                       @class = "form-control",
+                                       @id = "txtPhone",
+                                       @required = "required"
+                                   })
+                                        @Html.ValidationMessageFor(o => o.CustomerMobile)
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.TextAreaFor(o => o.CustomerMessage, new { @placeholder = "Để lại lời nhắn", @class = "form-control" })
+                                        @Html.ValidationMessageFor(o => o.CustomerMessage)
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group clearfix ">
+                                <input class="btn btn-primary col-md-12 mt10 btn-checkout" id="btnCreateOrder" type="submit" value="ĐẶT HÀNG">
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        <div class="form-group payment-method-list">
+                            <h2>
+                                <label class="control-label">Thanh toán</label>
+                            </h2>
+
+                            <div class="radio">
+                                <label class="radio-wrapper">
+
+                                    <span>Thanh toán khi giao hàng (COD)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="~/assets/client/js/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $.ajax({
+                url: '/ShoppingCart/GetUser',
+                type: 'POST',
+                dataType: 'json',
+                success: function (res) {
+                    if (res.status == true) {
+                        var user = res.data;
+                        $('#txtName').val(user.FullName);
+                        $('#txtAddress').val(user.Address);
+                        $('#txtEmail').val(user.Email);
+                        $('#txtPhone').val(user.PhoneNumber);
+                    }
+
+                }
+            });
+        });
+    </script>
+
+
+
+</body>
+</html>

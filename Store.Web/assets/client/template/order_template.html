@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+</head>
+<style>
+
+</style>
+<body>
+    <h1>QuanStore.com - Thông tin đơn hàng</h1>
+    <p>To - {{CustomerEmail}}</p>
+    <p>Xin chào anh/chị: <strong>{{CustomerName}}</strong>. Cảm ơn anh/chị đã mua hàng tại QuanStore.com. Chúng tôi sẽ thông báo cho anh/chị khi đơn hàng được gửi đi</p>
+
+    <div class="product-detail" style="width:60%;">
+        <h2>Chi tiết đơn hàng</h2>
+        <p>{{ProductDetail}}</p>
+        <br /><br />
+
+        <p><span style="display:inline-block;width:25%">Tổng tiền: </span> <strong style="float:right;">{{TotalPrice}}</strong></p>
+        <p><span style="display:inline-block;width:25%">Phí vận chuyển: </span><strong style="float:right;">40,000</strong></p>
+        <p><span style="display:inline-block;width:25%">Tổng tiền phải trả: </span><strong style="float:right;">{{FinalPrice}}</strong></p>
+    </div>
+   
+
+</body>
+</html>

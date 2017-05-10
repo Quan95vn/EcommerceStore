@@ -1,0 +1,69 @@
+﻿@model Store.Web.ViewModels.ApplicationUserViewModel
+@{
+    ViewBag.Title = "Thay đổi chi tiết người dùng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<hr class="hr--border-top small--hide">
+
+
+<nav class="breadcrumb-nav small--text-center" aria-label="You are here">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+        <a href="/" itemprop="url" title="Trang chủ">
+            <span itemprop="title">Trang chủ</span>
+        </a>
+        <span class="breadcrumb-nav__separator" aria-hidden="true">›</span>
+    </span>
+
+    <span itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+
+        <a href="/account/index" itemprop="url" title="Tài khoản">
+            <span itemprop="tai-khoan.html">Tài khoản</span>
+        </a>
+
+        <span class="breadcrumb-nav__separator" aria-hidden="true">›</span>
+    </span>
+
+    Thay đổi chi tiết người dùng
+
+</nav>
+
+<div class="medium-up--one-whole">
+    <div class="contact-form form-vertical medium-up--four-tenths">
+
+
+        @using (Html.BeginForm("ChangeDetail", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+
+            @Html.ValidationSummary(false, "", new { @class = "error" })
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(f => f.Id)
+
+            @Html.LabelFor(f => f.Email)
+            @Html.TextBoxFor(f => f.Email, new { @placeholder = "Email", @type = "email", required= "required" })
+
+            @Html.LabelFor(f => f.FullName)
+            @Html.TextBoxFor(f => f.FullName, new { @placeholder = "Họ tên người dùng", required = "required" })
+
+            @Html.LabelFor(f => f.UserName)
+            @Html.TextBoxFor(f => f.UserName, new { @placeholder = "Tên tài khoản", required = "required" })
+
+
+            @Html.LabelFor(f => f.Address)
+            @Html.TextBoxFor(f => f.Address, new { @placeholder = "Địa chỉ" })
+
+
+            @Html.LabelFor(f => f.PhoneNumber)
+            @Html.TextBoxFor(f => f.PhoneNumber, new { @placeholder = "Số điên thoại" })
+
+            <input type="submit" class="btn" value="Cập nhật">
+
+
+        }
+
+    </div>
+</div>
+
+
+

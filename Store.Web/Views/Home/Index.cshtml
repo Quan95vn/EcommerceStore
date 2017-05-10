@@ -1,0 +1,80 @@
+﻿@model Store.Web.ViewModels.HomeViewModel
+
+@{
+    ViewBag.Title = "Chào mừng bạn đến với QuanStore.com";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="index-sections">
+    <!-- BEGIN content_for_index -->
+    <div id="quanstore-section" class="quanstore-section">
+        <!-- A single banner image on home page 0 -->
+
+
+        @{ Html.RenderAction("Slide", "Home"); }
+
+    </div>
+
+
+    <div id="quanstore-section" class="quanstore-section">
+
+
+        <div class="featured-products">
+            <h2 class="small--text-center">Sản phẩm nổi bật</h2>
+
+
+            <div class="grid grid--uniform" role="list">
+
+                @foreach (var product in Model.FeatureProductVm)
+                {
+
+                    var url = "/sanpham/" + product.Id + "/" + product.Alias + ".html";
+
+                    <div class="product grid__item medium-up--one-third small--one-half slide-up-animation animated" role="listitem">
+                        <a href="@url" title="@product.Alias">
+                            <img src="@product.ThumbImage" alt="@product.Alias">
+                        </a>
+
+                        <div class="product__title text-center">
+                            <a href="@url">@product.Name</a>
+                        </div>
+
+
+                        <div class="product__prices text-center">
+                            @if (product.PromotionPrice.HasValue)
+                            {
+                                <span class="product__price--on-sale">
+
+                                    <strong class="visually-hidden">Sale price</strong>
+                                    @(product.PromotionPrice.Value.ToString("N0") + "₫")
+                                    <s>@(product.Price.ToString("N0") + "₫")</s>
+                                </span>
+                                <span class="badge badge--sale">
+                                    <span>Sale</span>
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="product__price">
+                                    <span class="visually-hidden">Regular price</span>
+                                    @(product.Price.ToString("N0") + "₫")
+                                </span>
+                            }
+
+                        </div>
+
+                        <div itemprop="offers" class="offers-center">
+                            <div class="product-single__cart-submit-wrapper">
+                                <button type="submit" name="add" data-id="@product.Id" class="btn product-single__cart-submit btn--secondary btnAddToCart">
+                                    Thêm vào giỏ
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+
+    </div>
+</div>

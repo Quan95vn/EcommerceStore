@@ -1,0 +1,88 @@
+﻿<section class="content-header">
+    <h1>
+        Danh mục sản phẩm
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        
+        <li class="active">Danh mục sản phẩm</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Danh mục sản phẩm</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" ng-model="keyword" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" placeholder="Từ khóa..." ng-click="search()">Tìm kiếm</button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-success" ui-sref="category_add">Thêm mới</button>
+                    <button class="btn btn-danger" ng-click="deleteMultiple()" id="btnDelete" disabled>Xóa</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th><input name="all" type="checkbox" ng-click="selectAll()" /></th>
+                            <th style="width: 5%">ID</th>
+                            <th style="width: 30%">Tên danh mục</th>
+                            <th style="width: 10%">Url</th>
+                            <th style="width: 10%">Danh mục cha</th>
+                            <th style="width: 10%">Thứ tự</th>
+                            <th style="width: 15%">Ngày tạo</th>
+                            <th style="width: 10%">Trạng thái</th>
+                            <th style="width: 10%">Thao tác</th>
+                        </tr>
+                        <tr ng-repeat="category in categories">
+                            <td><input type="checkbox" ng-model="category.checked" name="all" /></td>
+                            <td>{{category.Id}}</td>
+                            <td>{{category.Name}}</td>
+                            <td>{{category.Url}}</td>
+                            <td>{{category.ParentId}}</td>
+                            <td>{{category.DisplayOrder}}</td>
+                            <td>{{category.CreatedDate | date:'dd/MM/yyyy hh:mm:ss'}}</td>
+                            <td><span ng-class="{'badge bg-red': category.Status==false,'badge bg-green': category.Status==true}">{{category.Status | statusFilter}}</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-primary" ng-click="openEditDialog(category);"><i class="fa fa-pencil"></i></button>
+                                <button class="btn btn-sm btn-danger" ng-click="deleteCategory(category.Id)"><i class="fa fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tfoot>
+                            <tr>
+                                <td colspan="8"><span class="pull-right">Trang: {{page+1}} - Tổng số bản ghi : {{totalCount}}</span></td>
+                            </tr>
+
+                        </tfoot>
+                    </table>
+                    <div ng-if="loading">
+                        <div class="col-xs-4"></div>
+                        <div class="col-xs-4">
+                            <i class="fa fa-refresh fa-4x fa-spin"></i> <label class="label label-primary">Đang tải...</label>
+                        </div>
+                        <div class="col-xs-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <pager-directive page="{{page}}" custom-path="{{customPath}}" pages-count="{{totalPage}}" total-count="{{totalCount}}" search-func="getCategories(page)"></pager-directive>
+        </div>
+    </div>
+</section>

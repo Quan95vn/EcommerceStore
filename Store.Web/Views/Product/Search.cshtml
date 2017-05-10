@@ -1,0 +1,182 @@
+﻿@model Store.Web.Infrastructure.Core.PaginationSet<Store.Web.ViewModels.ProductViewModel>
+
+
+
+
+@{
+    var keyword = (string)ViewBag.Keyword;
+    ViewBag.Title = "Tìm kiếm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var select = (string)ViewBag.SelectedSort;
+}
+
+@section footerJS {
+    <script>
+        function doNavigate() {
+            window.location.href = document.getElementById("UrlList").value;
+        }
+
+        $(document).ready(function () {
+            $('#@select').attr('selected', 'selected');
+        });
+
+
+    </script>
+}
+
+<hr class="hr--border-top small--hide">
+
+<nav class="breadcrumb-nav small--text-center" aria-label="You are here">
+    <span itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+        <a href="/" itemprop="url" title="Trở về trang chủ">
+            <span itemprop="title">Trang chủ</span>
+        </a>
+        <span class="breadcrumb-nav__separator" aria-hidden="true">›</span>
+    </span>
+
+
+    <span itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+
+        <span itemprop="title">Tìm kiếm</span>
+
+        <span class="breadcrumb-nav__separator" aria-hidden="true"></span>
+    </span>
+
+
+</nav>
+
+
+<div id="shopify-section-collection-template" class="shopify-section">
+
+    <div data-section-id="collection-template" data-section-type="collection-template" data-sort-enabled="true" data-tags-enabled="false">
+        <header class="grid">
+            <p style="font-weight:700;" class="grid__item small--text-center medium-up--two-quarters">Từ khóa : @keyword - <span>@Model.TotalCount sản phẩm</p>
+
+            <div class="collection-sorting grid__item medium-up--two-quarters medium-up--text-right small--text-center">
+
+
+                <div class="collection-sorting__dropdown">
+                    <label class="label--hidden">Sort by</label>
+                    <select id="UrlList" onchange="doNavigate()">
+                        <option id="default"></option>
+                        <option id="featured" value="?page=@Model.Page&sort=most-viewed">
+                            Sản phẩm xem nhiều
+                        </option>
+                        <option id="featured" value="?page=@Model.Page&sort=featured">
+                            Sản phẩm nổi bật
+                        </option>
+                        <option id="best-selling" value="?page=@Model.Page&sort=best-selling">
+                            Sản phẩm hot
+                        </option>
+                        <option id="price-ascending" value="?page=@Model.Page&sort=price-ascending">
+                            Giá từ thấp -> cao
+                        </option>
+                        <option id="price-descending" value="?page=@Model.Page&sort=price-descending">
+                            Giá từ cao -> thấp
+                        </option>
+                        <option id="discount" value="?page=@Model.Page&sort=discount">
+                            Sản phẩm khuyến mại
+                        </option>
+                        <option id="date-descending" value="?page=@Model.Page&sort=date-descending">
+                            Theo ngày giảm dần
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+            </div>
+
+
+        </header>
+        <div class="grid grid--uniform" role="list">
+
+            @foreach (var product in Model.Items)
+            {
+
+                var url = "/sanpham/" + product.Id + "/" + product.Alias + ".html";
+
+                <div class="product grid__item medium-up--one-third small--one-half slide-up-animation animated" role="listitem">
+                    <a href="@url" class="product__image" title="@product.Name">
+                        <img src="@product.ThumbImage" alt="@product.Alias">
+                    </a>
+                    <div class="product__title text-center">
+                        <a href="@url">@product.Name</a>
+                    </div>
+
+                    <div class="product__prices text-center">
+                        @if (product.PromotionPrice.HasValue)
+                        {
+                            <span class="product__price--on-sale">
+
+                                <strong class="visually-hidden">Sale price</strong>
+                                @(product.PromotionPrice.Value.ToString("N0") + "₫")
+                                <s>@(product.Price.ToString("N0") + "₫")</s>
+                            </span>
+
+                        }
+                        else
+                        {
+                            <span class="product__price">
+                                <span class="visually-hidden">Regular price</span>
+                                @(product.Price.ToString("N0") + "₫")
+                            </span>
+                        }
+
+                    </div>
+                </div>
+            }
+
+
+        </div>
+
+        @if (Model.TotalPage > 1)
+        {
+            // Create numeric links
+            var startPageIndex = Math.Max(1, Model.Page - Model.MaxPage / 2);
+            var endPageIndex = Math.Min(Model.TotalPage, Model.Page + Model.MaxPage / 2);
+
+            <div class="pagination text-center">
+                @if (Model.Page > 1)
+                {
+
+                    <span>
+                        <a href="?page=@(Model.Page-1)&sort=@select">
+                            « Previous
+                        </a>
+                    </span>
+                }
+                @for (int i = startPageIndex; i <= endPageIndex; i++)
+                {
+                    if (Model.Page == i)
+                    {
+                        <span class="page">
+                            <a href="?page=@i&sort=@select" class="activeLink" title="Trang @i">@i</a>
+                        </span>
+
+                    }
+                    else
+                    {
+                        <span class="page">
+                            <a href="?page=@i&sort=@select" title="Trang @i">@i</a>
+                        </span>
+                    }
+                }
+                @if (Model.Page < Model.TotalPage)
+                {
+                    <span>
+                        <a href="?page=@(Model.Page + 1)&sort=@select">
+                            Next »
+                        </a>
+                    </span>
+                }
+
+
+
+
+            </div>
+
+        }
+    </div>
+</div>

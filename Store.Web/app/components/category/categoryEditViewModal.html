@@ -1,0 +1,61 @@
+﻿
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Cập nhật danh mục:  {{ category.Name}}
+    </div>
+    <div class="panel-body">
+        <form role="form" novalidate angular-validator name="frmUpdateCategory">
+            <div class="">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="control-label" for="name">Tên danh mục</label>
+                            <input type="text" class="form-control" name="name" required ng-maxlength="256"  ng-model="category.Name" placeholder="Tên danh mục" />
+                            <span ng-show="frmUpdateCategory.name.$invalid" class="error">Bạn phải nhập tên danh mục.</span>
+                            <span ng-show="frmUpdateCategory.name.$error.maxlength" class="error"> Tên danh mục không được vượt quá 256 kí tự.</span>
+
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="control-label" for="alias">Alias</label>
+                            <input type="text" class="form-control" ng-model="category.Alias" name="alias" required ng-maxlength="256" placeholder="Tiêu đề SEO" />
+                            <span ng-show="frmUpdateCategory.alias.$invalid" class="error">Bạn phải nhập tiêu đề SEO.</span>
+                            <span ng-show="frmUpdateCategory.alias.$error.maxlength" class="error"> Tiêu đề SEO không được vượt quá 256 kí tự.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="control-label" for="name">Thứ tự</label>
+                            <input type="text" class="form-control" ng-model="category.DisplayOrder" name="displayOrder" placeholder="Thứ tự" />
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="control-label" for="alias">Danh mục cha</label>
+                            <!--<input type="text" class="form-control" ng-model="category.ParentId" name="parentId" required placeholder="Danh mục cha" />-->
+                            <select type="text" class="form-control" name="categoryId" ng-init="category.ParentId" ng-model="category.ParentId" ng-options="option.Id as option.Name for option in flatFolders">
+                                <option value="">-- Chọn chuyên mục cha --</option>
+                            </select>
+                            <input type="hidden" name="parentId" ng-model="category.ParentId" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="status" ng-model="category.Status" ng-checked="category.Status"> Trạng thái
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <div class="panel-footer clearfix">
+        <div class="pull-right">
+            <button type="button" class="btn btn-danger"  ng-disabled="frmUpdateCategory.$invalid" ng-click="CancelEdit()">Cancel</button>
+            <button type="button" class="btn btn-primary"  ng-disabled="frmUpdateCategory.$invalid" ng-click="UpdateCategory()">Update</button>
+        </div>
+    </div>
+</div>

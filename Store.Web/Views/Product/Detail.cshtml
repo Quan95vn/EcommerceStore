@@ -1,0 +1,260 @@
+﻿@model Store.Web.ViewModels.ProductViewModel
+
+@{
+    var category = (Store.Web.ViewModels.CategoryViewModel)ViewBag.Category;
+    var parentUrl = "/" + category.Alias + "-nhom-" + category.Id;
+}
+
+@{
+    ViewBag.Title = "Mua " + Model.Name + " giá rẻ tại QuanStore.com";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section footerJS{
+    <script src="~/assets/client/js/cloud-zoom.js"></script>
+}
+
+<hr class="hr--border-top small--hide">
+
+
+<nav class="breadcrumb-nav small--text-center" aria-label="You are here">
+    <span itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+        <a href="/" itemprop="url" title="Trở về trang chủ">
+            <span itemprop="title">Trang chủ</span>
+        </a>
+        <span class="breadcrumb-nav__separator" aria-hidden="true">›</span>
+    </span>
+
+
+    <span itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+
+        <span itemprop="title">Laptop</span>
+
+        <span class="breadcrumb-nav__separator" aria-hidden="true">›</span>
+    </span>
+    <span itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+
+        <a href="@parentUrl" itemprop="url" title="Trở về trang chủ">
+            <span itemprop="title">@category.Name</span>
+        </a>
+
+        <span class="breadcrumb-nav__separator" aria-hidden="true">›</span>
+    </span>
+
+    @Model.Name
+
+</nav>
+
+<div id="quanstore-section-product-template" class="quanstore-section">
+    <!-- /templates/product.liquid -->
+    <div itemscope itemtype="http://schema.org/Product" id="ProductSection" data-section-id="product-template" data-section-type="product-template"
+         data-image-zoom-type="zoom-in" data-show-extra-tab="false" data-extra-tab-content="" data-cart-enable-ajax="true"
+         data-enable-history-state="true">
+
+
+
+
+        <div class="grid product-single">
+
+            <div class="grid__item medium-up--one-half">
+                <div class="product-single__featured-image-wrapper">
+                    @*<div class="product-single__photos" id="ProductPhoto">
+
+                            <img src="@Model.ThumbImage" alt="@Model.Name" class="cloud-zoom" rel="useWrapper: false, adjustY:0, adjustX:20"/>
+                        </div>*@
+
+                    <a href="@Model.ThumbImage" class="cloud-zoom" id="zoom1" rel="useWrapper: false, adjustY:0, adjustX:20">
+                        <img src="@Model.ThumbImage">
+                    </a>
+
+
+
+                </div>
+
+                <div class="flexslider flexslider-thumb">
+                    <ul id="prd_view_thumbs" class="previews-list slides">
+                        @{
+                            var moreImages = (List<string>)ViewBag.MoreImages;
+                            if (moreImages.Count > 0)
+                            {
+                                foreach (var image in moreImages)
+                                {
+                                    <li class="owl-sync">
+                                        <a href="@image" class='cloud-zoom-gallery' rel="useZoom: 'zoom1', smallImage: '@image' ">
+                                            <img src="@image" alt="" />
+                                        </a>
+                                    </li>
+                                }
+                            }
+                        }
+
+
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="grid__item medium-up--one-half">
+                <div class="product-single__meta small--text-center">
+                    <h1 class="product-single__title" itemprop="name">@Model.Name</h1>
+
+                    <p class="product-single__prices">
+                        @if (Model.PromotionPrice.HasValue)
+                        {
+                            <span class="product__price--on-sale">
+
+                                <strong class="visually-hidden">Sale price</strong>
+                                @(Model.PromotionPrice.Value.ToString("N0") + "₫")
+                                <s>@(Model.Price.ToString("N0") + "₫")</s>
+                            </span>
+
+                        }
+                        else
+                        {
+                            <span class="visually-hidden">Regular price</span>
+                            <span id="ProductPrice" class="product-single__price">
+                                @(Model.Price.ToString("N0") + "₫")
+                            </span>
+                        }
+
+                    </p>
+
+
+                    @Html.Raw(Model.Description)
+
+                    <div itemprop="offers">
+
+
+                        <div class="product-single__cart-submit-wrapper">
+                            @if (Model.Quantity < 1)
+                            {
+                                <button type="submit" name="add" data-id="@Model.Id" class="btn product-single__cart-submit btn--secondary btnAddToCart">
+                                    Hết hàng
+                                </button>
+                            }
+                            else
+                            {
+                                <button type="submit" name="add" data-id="@Model.Id" class="btn product-single__cart-submit btn--secondary btnAddToCart">
+                                    Thêm vào giỏ
+                                </button>
+                            }
+                           
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+
+        <div class="product-single__description rte" itemprop="description">
+            <div class="product-description__block">
+                <h2>Giới thiệu sản phẩm @Model.Name</h2>
+
+                @Html.Raw(Model.Content)
+
+
+                <!-- Tags here -->
+            </div>
+
+
+            <div class="product-description__block">
+                <h2>Thông tin sản phẩm @Model.Name</h2>
+
+
+
+                <!-- Info detail-->
+                @Html.Raw(Model.InfoDetail)
+
+            </div>
+        </div>
+
+        <!-- Sản phẩm liên quan -->
+        <section class="related-products">
+            <hr>
+            <h2 class="section-header__title h3">Sản phẩm liên quan</h2>
+            <div class="grid grid--uniform">
+                @{
+                    var relatedProducts = (IEnumerable<Store.Web.ViewModels.ProductViewModel>)ViewBag.RelatedProducts;
+
+                    foreach (var product in relatedProducts)
+                    {
+                        var url = "/sanpham/" + product.Id + "/" + product.Alias + ".html";
+                        var productName = product.Name;
+
+                        <div class="product grid__item medium-up--one-third small--one-half slide-up-animation animated" role="listitem">
+                            <a href="@url" class="product__image" title="@productName">
+                                <img src="@product.ThumbImage" alt="@productName">
+                            </a>
+                            <div class="product__title text-center">
+                                <a href="@url">@productName</a>
+                            </div>
+
+                            <div class="product__prices text-center">
+                                <span class="product__price">
+                                    @if (product.PromotionPrice.HasValue)
+                                    {
+                                        <span class="product__price--on-sale">
+
+                                            <strong class="visually-hidden">Sale price</strong>
+                                            @(product.PromotionPrice.Value.ToString("N0") + "₫")
+                                            <s>@(product.Price.ToString("N0") + "₫")</s>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="visually-hidden">Regular price</span>
+                                        @product.Price.ToString("N0")
+                                    }
+
+                                </span>
+                            </div>
+                        </div>
+                    }
+
+
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+        </section>
+
+
+
+
+    </div>
+</div>

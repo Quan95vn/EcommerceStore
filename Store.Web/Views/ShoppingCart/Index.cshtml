@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewBag.Title = "Giỏ hàng của bạn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section footerJS {
+    <script src="~/assets/admin/libs/mustache/mustache.min.js"></script>
+    <script src="~/assets/admin/libs/numeral/min/numeral.min.js"></script>
+    <script src="~/assets/client/js/controller/shoppingCart.js"></script>
+}
+
+<hr class="hr--border-top small--hide">
+
+<nav class="breadcrumb-nav small--text-center" aria-label="You are here">
+    <span itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+        <a href="/" itemprop="url" title="Trở về trang chủ">
+            <span itemprop="title">Home</span>
+        </a>
+        <span class="breadcrumb-nav__separator" aria-hidden="true">›</span>
+    </span>
+
+    Giỏ hàng của bạn
+
+</nav>
+
+<div class="grid">
+    <div class="grid__item" @*id="cartContent"*@>
+
+        <div id="cartContent">
+            <table class="table">
+                <thead>
+                    <tr>
+                        @*<td style="width:5%;">STT</td>*@
+                        <td style="width:30%">Tên sản phẩm</td>
+                        <td style="width:20%">Hình ảnh</td>
+                        <td style="width:15%">Giá</td>
+                        <td style="width:10%">Số lượng</td>
+                        <td style="width:10%">Thành tiền</td>
+                        <td style="width:10%">#</td>
+                    </tr>
+                </thead>
+                <tbody id="cartBody"></tbody>
+
+            </table>
+
+            <button class="btn btn--danger" id="btnDeleteAll">Xóa giỏ hàng</button>
+            <button class="btn btn--success" id="btnContinue">Tiếp tục mua hàng</button>
+            <button class="btn btn--primary" id="btnCheckout">Thanh toán</button>
+
+            <div class="pull-right">
+
+                <strong>Tổng tiền: <span id="lblTotalOrder"></span></strong>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script id="tplCart" type="x-tmpl-mustache">
+    <tr>
+        @*<td>{{ProductId}}</td>*@
+        <td>{{ProductName}}</td>
+        <td><img src="{{ThumbImage}}" height="100" /></td>
+        <td>{{PriceF}}</td> <!-- Price after numeral.js-->
+        <td><input type="number" data-id="{{ProductId}}" data-price="{{Price}}" value="{{Quantity}}" class="input txtQuantity" /></td>
+        <td id="amount_{{ProductId}}">{{Amount}}</td>
+        <td><button class="btn btn-danger btnDeleteItem" data-id="{{ProductId}}"><i class="fa fa-close"></i></button></td>
+    </tr>
+</script>

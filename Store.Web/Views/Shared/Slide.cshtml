@@ -1,0 +1,18 @@
+﻿@model IEnumerable<Store.Web.ViewModels.SlideViewModel>
+
+<div class="grid banner-wrapper">
+    <div id="owl-slide" class="owl-carousel owl-theme">
+        @foreach (var slide in Model)
+        {
+            <div class="grid__item banner slide-up-animation animated">
+
+                <img class="banner__image" src="@slide.Image"
+                     alt="@slide.Name"
+                     itemprop="image">
+
+            </div>
+        }
+    </div>
+
+
+</div>

@@ -1,0 +1,61 @@
+﻿@model Store.Web.ViewModels.RegisterViewModel
+@using BotDetect.Web.Mvc
+
+@{
+    ViewBag.Title = "Đăng ký tài khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section headerCSS{
+    <link href="@BotDetect.Web.CaptchaUrls.Absolute.LayoutStyleSheetUrl" rel="stylesheet" type="text/css" />
+}
+
+<hr class="hr--border-top small--hide">
+
+
+
+<nav class="breadcrumb-nav small--text-center" aria-label="You are here">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+        <a href="/" itemprop="url" title="Trang chủ">
+            <span itemprop="title">Trang chủ</span>
+        </a>
+        <span class="breadcrumb-nav__separator" aria-hidden="true">›</span>
+    </span>
+
+    Đăng ký tài khoản
+
+</nav>
+
+<div class="medium-up--one-whole">
+    <div class="text--success">
+        <p>
+            @ViewBag.Message
+        </p>
+    </div>
+
+    <div class="contact-form form-vertical medium-up--four-tenths">
+
+
+        @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+        {
+
+            @Html.ValidationSummary(false, "", new {@class = "error"})
+            @Html.AntiForgeryToken()
+
+
+
+            @Html.TextBoxFor(f => f.FullName, new {@placeholder = "Họ tên người dùng", required = "required" })
+            @Html.TextBoxFor(f => f.Email, new {@placeholder = "Email", @type = "email", required = "required" })
+            @Html.TextBoxFor(f => f.UserName, new { @placeholder = "Tên tài khoản", required = "required" })
+            @Html.PasswordFor(f => f.Password, new {@placeholder = "Mật khẩu", required = "required" })
+            @Html.PasswordFor(f => f.ConfirmPassword, new {@placeholder = "Nhập lại mật khẩu", required = "required" })
+            @Html.TextBoxFor(f => f.PhoneNumber, new {@placeholder = "Số điện thoại", required = "required" })
+
+            MvcCaptcha registerCaptcha = new MvcCaptcha("registerCaptcha");
+            @Html.Captcha(registerCaptcha)
+            @Html.TextBox("CaptchaCode")
+
+            <input type="submit" class="btn" value="Đăng ký">
+        }
+    </div>
+</div>

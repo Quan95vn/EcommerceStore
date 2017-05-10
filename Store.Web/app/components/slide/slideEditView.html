@@ -1,0 +1,65 @@
+﻿<section class="content-header">
+    <h1>
+        Cập nhật slide
+    </h1>
+    <ol class="breadcrumb">
+        <li><a ui-sref="admin"><i class="fa fa-dashboard"></i> Trang quản trị</a></li>
+        <li><a ui-sref="slide"><i class="glyphicon glyphicon-film"></i> Slide</a></li>
+        <li class="active">Cập nhật slide</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">Cập nhật</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form class="form-horizontal" novalidate name="frmEditSlide" role="form" ng-submit="EditSlide()">
+            <div class="box-body">
+                <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label">Tên slide</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="name" required ng-maxlength="256" ng-model="slide.Name">
+                        <span ng-show="frmEditSlide.name.$invalid" class="error">Bạn phải nhập tên slide.</span>
+                        <span ng-show="frmEditSlide.name.$error.maxlength" class="error"> Tên slide không được vượt quá 256 kí tự.</span>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="displayOrder" class="col-sm-2 control-label">Thứ tự</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" name="displayOrder" ng-model="slide.DisplayOrder">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="image" class="col-sm-2 control-label">Hình ảnh</label>
+                    <div class="col-sm-10">
+                        <img ng-src="{{singleImage}}" required ng-maxlength="500" width="300" height="200" />
+                        <button style="display:block;" type="button" class="btn btn-default" ng-click="ChooseImage()">Chọn ảnh</button>
+                        <span ng-show="frmEditSlide.image.$invalid" class="error">Bạn phải nhập hình ảnh.</span>
+                        <span ng-show="frmEditSlide.image.$error.maxlength" class="error"> Hình ảnh không được vượt quá 500 kí tự.</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="status" ng-model="slide.Status" ng-checked="slide.Status"> Trạng thái
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <button type="button" class="btn btn-default" ui-sref="slide">Hủy</button>
+                <button type="submit" class="btn btn-success pull-right">Cập nhật</button>
+            </div>
+            <!-- /.box-footer -->
+        </form>
+    </div>
+</section>  

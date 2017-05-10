@@ -1,0 +1,117 @@
+﻿@model Store.Web.ViewModels.FeedbackViewModel
+@using BotDetect.Web.Mvc
+
+@{
+    ViewBag.Title = "Liên hệ chúng tôi.";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section footerJS{
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLDjvq6kgRW7nKIhgcE5aAUn1JAee2ls4"></script>
+    <script src="~/assets/client/js/controller/contact.js"></script>
+}
+
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    #map {
+        height: 100%;
+    }
+
+    #map {
+        height: 450px;
+    }
+</style>
+@section headerCSS{
+    <link href="@BotDetect.Web.CaptchaUrls.Absolute.LayoutStyleSheetUrl" rel="stylesheet" type="text/css" />
+}
+
+
+
+<hr class="hr--border-top small--hide">
+
+
+
+<nav class="breadcrumb-nav small--text-center" aria-label="You are here">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+        <a href="/" itemprop="url" title="Trang chủ">
+            <span itemprop="title">Trang chủ</span>
+        </a>
+        <span class="breadcrumb-nav__separator" aria-hidden="true">›</span>
+    </span>
+
+    Liên hệ
+
+</nav>
+
+
+<!-- /templates/page.contact.liquid -->
+<h2 class="small--text-center">Liên hệ chúng tôi</h2>
+
+<input type="hidden" id="hidAddress" value="@Model.ContactDetail.Name<br />
+Email: @Model.ContactDetail.Email <br>
+Điện thoại: @Model.ContactDetail.PhoneNumber <br>
+Địa chỉ: @Model.ContactDetail.Address" />
+
+
+<input type="hidden" id="hidLat" value="@Model.ContactDetail.Lat" />
+<input type="hidden" id="hidLng" value="@Model.ContactDetail.Lng" />
+<input type="hidden" id="hidName" value="@Model.ContactDetail.Name" />
+
+<div class="medium-up--one-whole">
+
+    <div class="contact-form form-vertical medium-up--four-tenths">
+
+
+        @using (Html.BeginForm("SendFeedBack", "Contact", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            if (TempData["SuccessMsg"] != null)
+            {
+                <div class="notification successMsg" role="alert">
+                    <strong>Cảm ơn bạn! </strong> đã gửi phản hồi cho chúng tôi.
+                    <br />Chúng tôi sẽ liên hệ lại sớm nhất có thể.
+                </div>
+            }
+            @*@Html.ValidationSummary(false, "", new { @class = "error" });*@
+            @Html.ValidationMessageFor(f => f.Name)
+            @Html.TextBoxFor(f => f.Name, new { @placeholder = "Họ tên" })
+
+            @Html.ValidationMessageFor(f => f.Email)
+            @Html.TextBoxFor(f => f.Email, new { @placeholder = "Email", @type = "email" })
+
+
+            @Html.TextBoxFor(f => f.PhoneNumber, new { @placeholder = "Số điện thoại" })
+
+            @Html.ValidationMessageFor(f => f.Message)
+            @Html.TextAreaFor(f => f.Message, new { @placeholder = "Tin nhắn" })
+
+            @Html.ValidationMessage("CaptchaCode")
+            MvcCaptcha contactCaptcha = new MvcCaptcha("contactCaptcha");
+            @Html.Captcha(contactCaptcha)
+            @Html.TextBox("CaptchaCode")
+            
+
+            <input type="submit" class="btn" value="Gửi">
+        }
+
+
+
+
+
+
+
+
+
+    </div>
+    <div class="map medium-up--six-tenths">
+        <div id="map"></div>
+    </div>
+</div>
+
+

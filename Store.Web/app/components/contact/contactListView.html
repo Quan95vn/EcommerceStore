@@ -1,0 +1,86 @@
+﻿<section class="content-header">
+    <h1>
+        Liên hệ
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Liên hệ</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Liên hệ</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" ng-model="keyword" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" placeholder="Từ khóa..." ng-click="search()">Tìm kiếm</button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-success" ui-sref="contact_add">Thêm mới</button>
+                    <button class="btn btn-danger" ng-click="deleteMultiple()" id="btnDelete" disabled>Xóa</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th><input name="all" type="checkbox" ng-click="selectAll()" /></th>
+                            <th style="width: 5%">ID</th>
+                            <th style="width: 10%">Tên liên hệ</th>
+                            <th style="width: 10%">Email</th>
+                            <th style="width: 10%">SĐT</th>
+                            <th style="width: 10%">Địa chỉ</th>
+                            <th style="width: 10%">Website</th>
+                            <th style="width: 10%">Lat</th>
+                            <th style="width: 10%">Lng</th>
+                            <th style="width: 10%">Trạng thái</th>
+                            <th style="width: 10%">Thao tác</th>
+                        </tr>
+                        <tr ng-repeat="contact in contacts">
+                            <td><input type="checkbox" ng-model="contact.checked" name="all" /></td>
+                            <td>{{contact.Id}}</td>
+                            <td>{{contact.Name}}</td>
+                            <td>{{contact.Email}}</td>
+                            <td>{{contact.PhoneNumber}}</td>
+                            <td>{{contact.Address}}</td>
+                            <td>{{contact.Website}}</td>
+                            <td>{{contact.Lat}}</td>
+                            <td>{{contact.Lng}}</td>
+                            <td><span ng-class="{'badge bg-red': contact.Status==false,'badge bg-green': contact.Status==true}">{{contact.Status | statusFilter}}</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-primary" ng-click="openEditDialog(contact);"><i class="fa fa-pencil"></i></button>
+                                <button class="btn btn-sm btn-danger" ng-click="deleteContact(contact.Id)"><i class="fa fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tfoot>
+                            <tr>
+                                <td colspan="12"><span class="pull-right">Trang: {{page+1}} - Tổng số bản ghi : {{totalCount}}</span></td>
+                            </tr>
+
+                        </tfoot>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <pager-directive page="{{page}}" custom-path="{{customPath}}" pages-count="{{totalPage}}" total-count="{{totalCount}}" search-func="getCategories(page)"></pager-directive>
+        </div>
+   
+    </div>
+</section>

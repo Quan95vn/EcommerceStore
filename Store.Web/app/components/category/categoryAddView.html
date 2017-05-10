@@ -1,0 +1,97 @@
+﻿<section class="content-header">
+    <h1>
+        Danh mục sản phẩm
+    </h1>
+    <ol class="breadcrumb">
+        <li><a ui-sref="admin"><i class="fa fa-dashboard"></i> Trang quản trị</a></li>
+        <li><a ui-sref="category"><i class="fa fa-archive"></i> Danh mục sản phẩm</a></li>
+        <li class="active">Thêm danh mục sản phẩm</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">Thêm mới</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form class="form-horizontal" novalidate name="frmAddCategory" role="form" ng-submit="AddCategory()">
+            <div class="box-body">
+                <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label">Tên danh mục</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="name" required ng-maxlength="256" ng-model="category.Name">
+                        <span ng-show="frmAddCategory.name.$invalid" class="error">Bạn phải nhập tên danh mục.</span>
+                        <span ng-show="frmAddCategory.name.$error.maxlength" class="error"> Tên danh mục không được vượt quá 256 kí tự.</span>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label for="alias" class="col-sm-2 control-label">Tiêu đề SEO</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="alias" required ng-model="category.Alias">
+                        <span ng-show="frmAddCategory.alias.$invalid" class="error">Bạn phải nhập tiêu đề SEO.</span>
+                        <span ng-show="frmAddCategory.alias.$error.maxlength" class="error"> Tiêu đề SEO không được vượt quá 256 kí tự.</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="displayOrder" class="col-sm-2 control-label">Thứ tự</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" name="displayOrder" ng-model="category.DisplayOrder">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="description" class="col-sm-2 control-label">Mô tả ngắn</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="description" ng-model="category.Description">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="categoryId" class="col-sm-2 control-label">Danh mục cha</label>
+                    <div class="col-sm-10">
+                        <select type="text" class="form-control" name="categoryId" ng-init="category.ParentId" ng-model="category.ParentId" ng-options="option.Id as option.Name for option in flatFolders">
+                            <option value="">-- Chọn chuyên mục cha --</option>
+                        </select>
+                        <input type="hidden" name="parentId" ng-model="category.ParentId" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="image" class="col-sm-2 control-label">Hình ảnh</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="image" ng-model="category.Image">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="metaKeyword" class="col-sm-2 control-label">Meta Keyword</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="metaKeyword" ng-model="category.MetaKeyword">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="metaDescription" class="col-sm-2 control-label">Meta Description</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" name="metaDescription" ng-maxlength="500" ng-model="category.MetaDescription"></textarea>
+                        <span ng-show="frmAddCategory.metaDescription.$error.maxlength" class="error"> Meta Description không được vượt quá 500 kí tự.</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="status" ng-model="category.Status" ng-checked="category.Status"> Trạng thái
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <button type="button" class="btn btn-default" ui-sref="category">Hủy</button>
+                <button type="submit" class="btn btn-success pull-right">Thêm</button>
+            </div>
+            <!-- /.box-footer -->
+        </form>
+    </div>
+</section>  

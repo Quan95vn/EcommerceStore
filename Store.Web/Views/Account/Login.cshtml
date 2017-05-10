@@ -1,0 +1,66 @@
+﻿@model Store.Web.ViewModels.LoginViewModel
+@{
+    ViewBag.Title = "Đăng nhập";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<hr class="hr--border-top small--hide">
+
+
+
+<nav class="breadcrumb-nav small--text-center" aria-label="You are here">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+        <a href="/" itemprop="url" title="Trang chủ">
+            <span itemprop="title">Trang chủ</span>
+        </a>
+        <span class="breadcrumb-nav__separator" aria-hidden="true">›</span>
+    </span>
+
+    Đăng nhập
+
+</nav>
+
+<div class="medium-up--one-whole">
+    <div class="contact-form form-vertical medium-up--four-tenths">
+
+
+        @using (Html.BeginForm("Login", "Account", new { returnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
+        {
+
+            @Html.ValidationSummary(false, "", new { @class = "error" })
+            @Html.AntiForgeryToken()
+
+
+
+            @Html.TextBoxFor(f => f.Email, new { @placeholder = "Email của bạn.", @type = "email", required = "required" })
+
+            @Html.PasswordFor(f => f.Password, new { @placeholder = "Mật khẩu", required = "required" })
+
+
+
+            @Html.CheckBoxFor(f => f.RememberMe)
+            <span> Nhớ mật khẩu ?</span>
+
+
+
+
+                <input type="submit" class="btn" value="Đăng nhập">
+
+                <p><a href="/register" id="customer_register_link">Đăng ký</a></p>
+        }
+
+
+
+
+        <p>
+            <a href="/account/forgot-password">Quên mật khẩu?</a>
+        </p>
+
+
+
+
+    </div>
+</div>
+
+
+

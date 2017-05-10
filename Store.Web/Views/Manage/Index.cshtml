@@ -1,0 +1,178 @@
+﻿@model Store.Web.Infrastructure.Core.PaginationSet<Store.Web.ViewModels.OrderViewModel>
+@{
+    ViewBag.Title = "Thông tin tài khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section headerCSS {
+    <link href="~/assets/client/font-awesome-4.6.3/css/font-awesome.min.css" rel="stylesheet" />
+}
+
+<hr class="hr--border-top small--hide">
+
+<nav class="breadcrumb-nav small--text-center" aria-label="You are here">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+        <a href="/" itemprop="url" title="Trang chủ">
+            <span itemprop="title">Trang chủ</span>
+        </a>
+        <span class="breadcrumb-nav__separator" aria-hidden="true">›</span>
+    </span>
+
+    Tài khoản
+
+</nav>
+
+<h1 class="small--text-center">Tài khoản của tôi</h1>
+<hr class="hr--clear hr--small">
+<h2 class="small--text-center">Lich sử giao dịch</h2>
+@if (Model.Items.Count() == 0)
+{
+    <p>Bạn chưa thực hiện giao dịch nào cả.</p>
+}
+else
+{
+    <div class="grid">
+        <div class="grid__item">
+            <div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td style="width:10%">Trạng thái</td>
+                            <td style="width:25%">Tên sản phẩm</td>
+                            <td style="width:20%">Hình ảnh</td>
+                            <td style="width:15%">Ngày mua</td>
+                            <td style="width:10%">Giá</td>
+                            <td style="width:10%">Số lượng</td>
+                            <td style="width:10%">Thành tiền</td>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+
+
+                            foreach (var detail in item.OrderDetails)
+                            {
+                                <tr>
+                                    <td>
+                                        @if (item.PaymentStatus == "Đã thanh toán")
+                                        {
+                                            <span class="finish"><i title="Đã thanh toán" class="fa fa-check" aria-hidden="true"></i></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="warning"><i title="Chưa được thanh toán" class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @detail.Product.Name
+                                    </td>
+                                    <td>
+                                        <img src="@detail.Product.ThumbImage" height="100" />
+                                    </td>
+                                    <td>
+                                        @item.CreatedDate.ToString("MM/dd/yyyy HH:mm:ss")
+                                    </td>
+                                    <td>
+                                        @detail.Price.ToString("N0")
+                                    </td>
+                                    <td>
+                                        @detail.Quantity
+                                    </td>
+                                    <td>
+                                        <strong>@((detail.Price * detail.Quantity).ToString("N0"))</strong>
+                                    </td>
+
+                                </tr>
+                            }
+
+                        }
+
+
+
+
+
+
+
+
+
+
+
+                    </tbody>
+
+
+                </table>
+
+
+                @if (Model.TotalPage > 1)
+                {
+                    // Create numeric links
+                    var startPageIndex = Math.Max(1, Model.Page - Model.MaxPage / 2);
+                    var endPageIndex = Math.Min(Model.TotalPage, Model.Page + Model.MaxPage / 2);
+
+                    <div class="pagination text-center">
+                        @if (Model.Page > 1)
+                        {
+
+                            <span>
+                                <a href="?page=@(Model.Page-1)">
+                                    « Previous
+                                </a>
+                            </span>
+                        }
+                        @for (int i = startPageIndex; i <= endPageIndex; i++)
+                        {
+                            if (Model.Page == i)
+                            {
+                                <span class="page">
+                                    <a href="?page=@i" class="activeLink" title="Trang @i">@i</a>
+                                </span>
+
+                            }
+                            else
+                            {
+                                <span class="page">
+                                    <a href="?page=@i" title="Trang @i">@i</a>
+                                </span>
+                            }
+                        }
+                        @if (Model.Page < Model.TotalPage)
+                        {
+                            <span>
+                                <a href="?page=@(Model.Page + 1)">
+                                    Next »
+                                </a>
+                            </span>
+                        }
+
+
+
+
+                    </div>
+
+                }
+            </div>
+        </div>
+    </div>
+}
+
+
+@{
+    var user = (Store.Model.Models.ApplicationUser)ViewBag.UserInfo;
+}
+<hr class="hr--clear hr--small">
+<h2>Chi tiết tài khoản</h2>
+<p>
+    Họ tên: @user.FullName<br>
+    Email: @user.Email<br>
+    Địa chỉ: @user.Address<br />
+    Số điện thoại: @user.PhoneNumber<br>
+    <a href="/account/password" style="color:blue;">[Thay đổi mật khẩu]</a>
+    <a href="/account/user-info" style="color:blue;">[Thay đổi thông tin của bạn]</a>
+</p>
+
+
+
+
+
